@@ -5,6 +5,12 @@ const hbs     = require('hbs')
 const path    = require('path')
 const weather = require('../utils/weather')
 
+const hostname = 'localhost';
+const port     = 3000
+
+const app     = express()
+
+
 const staticPath = path.join(__dirname,'../public') //return current directory path
 
 app.use(express.static(staticPath));
@@ -16,24 +22,25 @@ const partialspath = path.join(__dirname,'../templates/partials')
 // register public partials static files
 app.set('view engine','hbs') //hbs-> handelbars
 app.set('views',viewspath)
-hbs.registerPartial(partialspath)
+hbs.registerPartial('partialPaths',partialspath)
 
 
 
 console.log(staticPath);
 
-const hostname = 'localhost';
-const port     = 3000
-
-const app     = express()
 
 
 app.get('',(req,res) => {
     res.send('hi this is wheather app')
 });
 
-app.get('/wheather',(req,res) => {
+app.get('/weather',(req,res) => {
     //res.send("this is wheather end point")
+    const address =req.query.address
+    weather(address,(result)=>{
+        console.log(result)
+    })
+
 
     
 });
