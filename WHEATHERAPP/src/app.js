@@ -32,7 +32,6 @@ app.set('view engine','hbs') //hbs-> handelbars
 
 
 
-
 app.get('',(req,res) => {
     res.render('index',{
         title:"Weather App"
