@@ -33,6 +33,9 @@ const ProfileSchema = new mongoose.Schema({
                 type: String,
                 required: true
             },
+            company: {
+                type: String
+            },
             location: {
                 type: String
             },
@@ -59,6 +62,10 @@ const ProfileSchema = new mongoose.Schema({
                 required: true
             },
             degree: {
+                type: String,
+                required: true
+            },
+            fieldofstudy: {
                 type: String,
                 required: true
             },
