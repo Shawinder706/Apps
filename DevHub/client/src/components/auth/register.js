@@ -1,7 +1,16 @@
 import React, { Fragment, useState } from 'react'
-import Axios from 'axios';
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-const Register = () => {
+import { setAlert } from "../../actions/alert";
+import { register } from '../../actions/auth'
+
+import PropTypes from 'prop-types'
+
+
+
+
+const Register = ({ setAlert, register }) => {
 
     const [formsData, setFormData] = useState({
         name: '',
@@ -18,34 +27,11 @@ const Register = () => {
     const onSubmit = async e => {
         e.preventDefault();
         if (password !== password2) {
-            console.log("password do not match");
+            setAlert("passwords do not match", 'danger'); // danger defined in css file 
         } else {
-            const newUser = {
-                name,
-                email,
-                password
-            }
-
-            try {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-
-                const body = JSON.stringify(newUser);
-
-                const res = await Axios.post('/api/users', body, config);
-                console.log(res)
-            } catch (err) {
-                console.error(err.response.data);
-
-            }
+            register({ name, email, password });
         }
-
     }
-
-
     return (
         <Fragment>
             <h1 className="large text-primary">Sign Up</h1>
@@ -58,7 +44,7 @@ const Register = () => {
                         name="name"
                         value={name}
                         onChange={e => onChange(e)}
-                        required />
+                    />
                 </div>
                 <div className="form-group">
                     <input
@@ -66,7 +52,8 @@ const Register = () => {
                         placeholder="Email Address"
                         name="email"
                         value={email}
-                        onChange={e => onChange(e)} />
+                        onChange={e => onChange(e)}
+                        autoComplete="username" />
                     <small className="form-text">This site uses Gravatar so if you want a profile image, use a Gravatar email</small>
                 </div>
                 <div className="form-group">
@@ -76,7 +63,7 @@ const Register = () => {
                         name="password"
                         value={password}
                         onChange={e => onChange(e)}
-                        minLength="6"
+                        autoComplete="new-password"
                     />
                 </div>
                 <div className="form-group">
@@ -86,16 +73,26 @@ const Register = () => {
                         name="password2"
                         value={password2}
                         onChange={e => onChange(e)}
-                        minLength="6"
+                        autoComplete="new-password"
                     />
                 </div>
                 <input type="submit" className="btn btn-primary" value="Register" />
             </form>
             <p className="my-1">
-                Already have an account? <a href="login.html">Sign In</a>
+                Already have an account? <Link to="/login">Sign In</Link>
             </p>
         </Fragment>
     )
+};
+
+//nameoftheComponent.proptypes
+Register.propTypes = {
+    setAlert: PropTypes.func.isRequired,
+    register: PropTypes.func.isRequired
 }
 
-export default Register;
+export default connect(null,
+    { setAlert, register }
+)(Register);
+
+// two params of connect any state and action object second object
