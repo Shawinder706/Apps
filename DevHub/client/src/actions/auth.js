@@ -9,12 +9,11 @@ import {
     AUTH_ERROR,
     LOGIN_FAIL,
     LOGIN_SUCCESS,
-    LOGOUT
+    LOGOUT,
+    CLEAR_PROFILE
 } from './types'
 
-
 //load user
-
 export const loadUser = () => async dispatch => {
 
     if (localStorage.token) {
@@ -78,11 +77,10 @@ export const login = ({ email, password }) => async dispatch => {
             'Content-Type': 'application/json'
         }
     }
-    console.log('action body a' + email, password);
+
     const body = JSON.stringify({ email, password });
 
     try {
-        console.log('action body' + body);
         const res = await axios.post('/api/auth', body, config);
 
         dispatch({
@@ -109,4 +107,5 @@ export const login = ({ email, password }) => async dispatch => {
 export const logout = () => dispatch => {
 
     dispatch({ type: LOGOUT })
+    dispatch({ type: CLEAR_PROFILE })
 }
